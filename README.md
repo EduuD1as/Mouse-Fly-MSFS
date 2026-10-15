@@ -2,73 +2,59 @@
 
 <img src="assets/icon.png" width="96" align="right" alt="ícone">
 
-Transforma o mouse em um joystick virtual (vJoy) para usar no **Microsoft Flight Simulator 2020/2024**:
+Use o mouse como joystick no **Microsoft Flight Simulator 2020/2024**.
 
-- **Eixo X/Y**: movimento do mouse (aileron / profundor)
-- **Botões 1–5**: clique esquerdo, direito, clique do scroll, **Mouse 4** e **Mouse 5** (laterais)
-- **Botões 6/7**: scroll para cima / para baixo (um pressionamento por "clique" da rodinha)
-- **Eixo Z** (opcional): scroll controla um eixo, útil como throttle
-- Interface simples com visualização ao vivo dos eixos e botões
-- Tecla global para ligar/desligar (padrão **F8**), funciona com o simulador em foco
+- Movimento do mouse controla o manche (aileron e profundor)
+- Clique esquerdo, direito, clique da rodinha, **Mouse 4** e **Mouse 5** (botões laterais) viram botões do joystick
+- A rodinha pode virar botões (para cima/para baixo) ou o acelerador
+- Tecla **F8** liga e desliga, mesmo com o jogo em tela cheia
+- Cada opção do programa tem um **?** explicando o que faz
 
 ![screenshot](docs/screenshot.png)
 
-## Requisitos
+## Download
 
-- Windows 10/11 64-bit
-- [vJoy](https://github.com/BrunnerInnovation/vJoy/releases) instalado
+**[⬇ Baixar Mouse-Fly-MSFS.exe](https://github.com/EduuD1as/Mouse-Fly-MSFS/raw/main/Mouse-Fly-MSFS.exe)**
 
-### Configurar o vJoy
+Não precisa instalar: é só abrir o `.exe`.
 
-Abra **Configure vJoy** e, no dispositivo 1 (ou outro), deixe ativados:
+## Antes de usar: instale o vJoy
 
-- Eixos **X**, **Y** (e **Z** se quiser o scroll como throttle)
-- **Número de botões: 7** ou mais
+O Mouse-Fly usa o **vJoy**, um joystick virtual gratuito.
 
-## Uso
+1. Baixe e instale o vJoy: https://github.com/BrunnerInnovation/vJoy/releases
+2. Abra o programa **Configure vJoy** (vem junto com o vJoy).
+3. No dispositivo **1**, deixe marcados os eixos **X**, **Y** e **Z**, e coloque **Number of Buttons: 8**.
+4. Clique em **Apply**.
 
-1. Execute o `Mouse-Fly-MSFS.exe`.
-2. Pressione **F8** (ou clique no botão do topo) para ativar.
-3. No MSFS, em **Opções → Controles**, selecione o dispositivo **vJoy Device** e associe:
-   - Eixo X → Aileron, Eixo Y → Elevator
-   - Botões 1–7 às funções que quiser
-4. Pressione **F8** para desativar quando precisar usar o mouse normalmente.
+## Como usar
 
-### Modos de eixo
+1. Abra o `Mouse-Fly-MSFS.exe`.
+2. Aperte **F8** para ligar (o botão no topo fica verde).
+3. No MSFS, vá em **Opções → Controles** e escolha o dispositivo **vJoy Device**.
+4. Associe:
+   - **Eixo X** → Aileron
+   - **Eixo Y** → Elevator (profundor)
+   - **Botões 1 a 7** → o que você quiser (flaps, trem de pouso, freio, trim...)
+   - **Eixo Z** → Throttle, se ativou "Scroll → eixo Z"
+5. Aperte **F8** de novo para desligar e usar o mouse normalmente nos menus.
 
-| Modo | Como funciona |
-|------|---------------|
-| **Cursor** | Posição do cursor no monitor atual. Centro da tela = manche centralizado. |
-| **Relativo** | Usa o movimento bruto do mouse (Raw Input), sem depender da borda da tela. "Auto-centrar" faz o manche voltar ao centro sozinho. |
+| Mouse | Joystick |
+|-------|----------|
+| Clique esquerdo | Botão 1 |
+| Clique direito | Botão 2 |
+| Clique da rodinha | Botão 3 |
+| Mouse 4 (lateral) | Botão 4 |
+| Mouse 5 (lateral) | Botão 5 |
+| Rodinha para cima | Botão 6 |
+| Rodinha para baixo | Botão 7 |
 
-Ajustes: sensibilidade, zona morta, curva (precisão perto do centro), inverter X/Y.
+## Problemas comuns
 
-**Bloquear cliques no Windows**: enquanto ativo, os botões e o scroll vão só para o joystick (não clicam na tela). Use a tecla de atalho para desativar.
-
-As configurações ficam em `%APPDATA%\MouseFlyMSFS\config.json`.
-
-## Rodar pelo código
-
-```bash
-python -m venv .venv
-.venv\Scripts\pip install -r requirements.txt
-.venv\Scripts\python main.py
-```
-
-## Gerar o executável
-
-```bash
-.venv\Scripts\pip install pyinstaller
-.venv\Scripts\pyinstaller --onefile --windowed --name "Mouse-Fly-MSFS" --icon assets\icon.ico --add-data "assets\icon.ico;assets" --collect-data customtkinter --exclude-module PIL --distpath . main.py
-```
-
-O `.exe` é gerado direto na raiz do projeto: `Mouse-Fly-MSFS.exe`.
-
-## Observações
-
-- A `vJoyInterface.dll` é carregada da pasta de instalação do vJoy, para sempre bater com a versão do driver.
-- Alguns antivírus acusam falso positivo em executáveis do PyInstaller que leem o mouse globalmente. O código-fonte está todo aqui.
-- Se o MSFS estiver rodando como administrador, rode o Mouse-Fly também como administrador.
+- **"vJoy ocupado por outro programa"**: feche outros programas de mouse/joystick (e outras janelas do Mouse-Fly).
+- **"vJoyInterface.dll não encontrada"**: o vJoy não está instalado.
+- **Não funciona com o jogo aberto**: se o MSFS roda como administrador, abra o Mouse-Fly como administrador também.
+- **Antivírus bloqueou**: alguns antivírus dão falso positivo em programas que leem o mouse. O código-fonte está todo neste repositório.
 
 ## Licença
 
