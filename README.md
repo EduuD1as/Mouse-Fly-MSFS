@@ -27,7 +27,7 @@ Abra **Configure vJoy** e, no dispositivo 1 (ou outro), deixe ativados:
 
 ## Uso
 
-1. Execute o `Mouse-Fly-MSFS.exe` que está na raiz do repositório (ou baixe em [Releases](../../releases)). Não precisa instalar Python nem compilar.
+1. Execute o `Mouse-Fly-MSFS.exe`.
 2. Pressione **F8** (ou clique no botão do topo) para ativar.
 3. No MSFS, em **Opções → Controles**, selecione o dispositivo **vJoy Device** e associe:
    - Eixo X → Aileron, Eixo Y → Elevator

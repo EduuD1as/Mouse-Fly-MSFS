@@ -25,6 +25,79 @@ CHIPS = [("left", "L", 1), ("right", "R", 2), ("middle", "M", 3), ("x1", "M4", 4
          ("x2", "M5", 5), ("wup", "▲", 6), ("wdn", "▼", 7)]
 
 
+HELP = {
+    "Modo": "Cursor: o manche acompanha a posição da setinha do mouse na tela. "
+            "Setinha no centro da tela = manche no meio.\n\n"
+            "Relativo: o manche se move conforme você mexe o mouse, mesmo que a setinha "
+            "bata na borda da tela. Use se o modo Cursor travar nas bordas.",
+    "Sensibilidade": "Quanto o manche se mexe para cada movimento do mouse. "
+                     "Maior = basta mexer pouco o mouse para chegar no limite. "
+                     "Menor = precisa mexer mais, porém fica mais preciso.",
+    "Zona morta": "Pequena área no meio onde movimentos pequenos são ignorados. "
+                  "Serve para o avião não ficar balançando quando você quer o manche parado no centro.",
+    "Curva": "Deixa o centro mais suave e as pontas mais fortes. "
+             "1 = resposta igual em todo o curso. Valores maiores facilitam correções pequenas, "
+             "ótimo para voo nivelado e pouso.",
+    "Auto-centrar": "Só funciona no modo Relativo. Faz o manche voltar sozinho para o meio "
+                    "quando você para de mexer o mouse, como um manche com mola. "
+                    "Off = o manche fica onde você deixou.",
+    "Inverter X": "Troca esquerda e direita: mover o mouse para a esquerda passa a inclinar o avião para a direita.",
+    "Inverter Y": "Troca frente e trás. Por padrão, puxar o mouse para trás = puxar o manche (nariz sobe). "
+                  "Ative se preferir o contrário.",
+    "Scroll → botões 6/7": "Cada clique da rodinha aperta o botão 6 (rolando para cima) ou o 7 (para baixo) do joystick. "
+                            "No MSFS você pode ligar esses botões a flaps, trim, zoom etc.",
+    "Scroll → eixo Z": "A rodinha passa a funcionar como uma alavanca. Ideal para o acelerador (throttle): "
+                       "rolar para cima acelera, para baixo reduz. Precisa do eixo Z ligado no Configure vJoy.",
+    "Passo do eixo Z": "Quanto a alavanca (eixo Z) muda a cada clique da rodinha. "
+                       "Menor = ajuste mais fino. Maior = chega no máximo mais rápido.",
+    "Bloquear cliques no Windows": "Enquanto o Mouse-Fly está ativo, os cliques e a rodinha só vão para o joystick "
+                                   "e não clicam em nada na tela. Evita apertar sem querer botões do cockpit ou menus. "
+                                   "Use a tecla liga/desliga para voltar ao normal.",
+    "Dispositivo vJoy": "Qual joystick virtual do vJoy usar. Normalmente é o 1. "
+                        "Só mude se tiver mais de um joystick virtual configurado no vJoy.",
+    "Tecla liga/desliga": "Tecla que liga e desliga o Mouse-Fly a qualquer momento, mesmo com o jogo em tela cheia. "
+                          "Desligado, o mouse volta a funcionar normal nos menus.",
+    "Ativar ao abrir": "O Mouse-Fly já começa ligado assim que o programa abre, sem precisar apertar a tecla.",
+    "Sempre no topo": "Mantém a janela do Mouse-Fly na frente das outras janelas.",
+}
+
+
+class HelpIcon(ctk.CTkLabel):
+    """Small '?' badge that shows an explanation tooltip on hover."""
+
+    def __init__(self, master, text):
+        super().__init__(master, text="?", width=16, height=16, corner_radius=8, fg_color=BORDER,
+                         text_color=TEXT, font=ctk.CTkFont("Segoe UI Semibold", 10), cursor="question_arrow")
+        self.help_text = text
+        self.tip = None
+        self.bind("<Enter>", self._show)
+        self.bind("<Leave>", self._hide)
+
+    def _show(self, _event=None):
+        if self.tip:
+            return
+        self.configure(fg_color=ACCENT)
+        self.tip = tk.Toplevel(self)
+        self.tip.wm_overrideredirect(True)
+        self.tip.attributes("-topmost", True)
+        self.tip.configure(bg=BORDER)
+        tk.Label(self.tip, text=self.help_text, justify="left", wraplength=300, bg=CARD_2, fg=TEXT,
+                 font=("Segoe UI", 10), padx=12, pady=9).pack(padx=1, pady=1)
+        self.tip.update_idletasks()
+        x = self.winfo_rootx() + self.winfo_width() + 8
+        y = self.winfo_rooty() - 6
+        w, h = self.tip.winfo_reqwidth(), self.tip.winfo_reqheight()
+        x = min(x, self.winfo_screenwidth() - w - 8)
+        y = min(y, self.winfo_screenheight() - h - 40)
+        self.tip.geometry(f"+{x}+{y}")
+
+    def _hide(self, _event=None):
+        self.configure(fg_color=BORDER)
+        if self.tip:
+            self.tip.destroy()
+            self.tip = None
+
+
 def resource_path(rel):
     base = getattr(sys, "_MEIPASS", os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     return os.path.join(base, rel)
@@ -142,7 +215,11 @@ class App(ctk.CTk):
         row.grid_columnconfigure(1, weight=1)
         lbl = ctk.CTkFrame(row, fg_color="transparent")
         lbl.grid(row=0, column=0, sticky="w")
-        ctk.CTkLabel(lbl, text=label, font=self.font, text_color=TEXT, height=18).pack(anchor="w")
+        title = ctk.CTkFrame(lbl, fg_color="transparent")
+        title.pack(anchor="w")
+        ctk.CTkLabel(title, text=label, font=self.font, text_color=TEXT, height=18).pack(side="left")
+        if label in HELP:
+            HelpIcon(title, HELP[label]).pack(side="left", padx=(6, 0))
         if hint:
             ctk.CTkLabel(lbl, text=hint, font=self.font_small, text_color=MUTED, height=14).pack(anchor="w")
         return row
