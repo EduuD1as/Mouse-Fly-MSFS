@@ -149,7 +149,7 @@ class App(ctk.CTk):
         bar.grid(row=0, column=0, columnspan=2, sticky="ew", padx=20, pady=(16, 8))
         bar.grid_columnconfigure(1, weight=1)
         ctk.CTkLabel(bar, text="✈  Mouse-Fly MSFS", font=self.font_title, text_color=TEXT).grid(row=0, column=0, sticky="w")
-        ctk.CTkLabel(bar, text=f"v{__version__}  ·  mouse → joystick vJoy", font=self.font_small,
+        ctk.CTkLabel(bar, text=f"v{__version__}", font=self.font_small,
                      text_color=MUTED).grid(row=0, column=1, sticky="w", padx=12, pady=(6, 0))
         self.toggle_btn = ctk.CTkButton(bar, text="", width=190, height=40, corner_radius=20,
                                         font=self.font_h, command=self.engine.toggle)
