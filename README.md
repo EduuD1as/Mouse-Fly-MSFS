@@ -58,7 +58,8 @@ python -m venv .venv
 ## Gerar o executável
 
 ```bash
-build.bat
+.venv\Scripts\pip install pyinstaller
+.venv\Scripts\pyinstaller --onefile --windowed --name "Mouse-Fly-MSFS" --icon assets\icon.ico --add-data "assets\icon.ico;assets" --collect-data customtkinter --exclude-module PIL --distpath . main.py
 ```
 
 O `.exe` é gerado direto na raiz do projeto: `Mouse-Fly-MSFS.exe`.
